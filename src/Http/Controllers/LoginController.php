@@ -26,6 +26,8 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/admin';
 
+    private $loginKey;
+
     /**
      * LoginController constructor.
      * @param UserRepository $user
@@ -35,6 +37,8 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
 
         $this->user = $user;
+
+        $this->loginKey = $this->username();
     }
 
     /**
@@ -73,7 +77,7 @@ class LoginController extends Controller
      */
     public function username() : string
     {
-        return 'username';
+        return env('LOGIN_KEY', 'username');
     }
 
     /**
@@ -93,7 +97,7 @@ class LoginController extends Controller
      */
     private function protectLogin($data)
     {
-        if (!$this->user->fetchOne('username', $data['username'])) {
+        if (!$this->user->fetchOne($this->loginKey, $data['username'])) {
 
             $user = $this->user->call('auth/', ['uname' => $data['username'], 'password' => $data['password']]);
 
@@ -108,7 +112,7 @@ class LoginController extends Controller
                 ]);
 
                 //Login the newly created user
-                $newUser = $this->user->fetchOne('username', $data['username']);
+                $newUser = $this->user->fetchOne($this->loginKey, $data['username']);
                 Auth::login($newUser);
 
                 return redirect()->intended('admin');
