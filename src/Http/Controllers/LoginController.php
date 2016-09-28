@@ -77,7 +77,7 @@ class LoginController extends Controller
      */
     public function username() : string
     {
-        return env('LOGIN_KEY', 'username');
+        return config('bridge.loginKey');
     }
 
     /**
@@ -99,11 +99,11 @@ class LoginController extends Controller
     {
         if (!$this->user->fetchOne($this->loginKey, $data['username'])) {
 
+            //Todo: Create mapping method for the legacy property to the new User property
             $user = $this->user->call('auth/', ['uname' => $data['username'], 'password' => $data['password']]);
 
             try {
 
-                //Todo: Create mapping method for the legacy property to the new User property
                 $this->user->create([
                     'name'     => $user->pn_name,
                     'username' => $user->pn_uname,

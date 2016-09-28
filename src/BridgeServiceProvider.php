@@ -15,6 +15,14 @@ class BridgeServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/views', 'bridge');
 
+        $this->publishes([
+            __DIR__ . '/database/migrations/' => database_path('migrations')
+        ], 'migrations');
+
+        $this->publishes([
+            __DIR__ . '/config/bridge.php' => config_path('bridge.php')
+        ], 'config');
+
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/routes.php';
         }
@@ -27,6 +35,6 @@ class BridgeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //die('222');
+        //
     }
 }

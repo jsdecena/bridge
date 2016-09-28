@@ -25,3 +25,11 @@
 ```
 
 - Set in your `.env` file the **LEGACY_AUTH_ENDPOINT**
+
+- Run this in your terminal `php artisan vendor:publish --tag=migrations`
+
+- Run this in your terminal `php artisan vendor:publish --tag=config`
+
+- Check the login key if you are using `username` or `email`. Use it accordingly.
+
+- Do not forget to set up your database credentials in `config/database.php` and run `php artisan migrate` to migrate your database schema.
